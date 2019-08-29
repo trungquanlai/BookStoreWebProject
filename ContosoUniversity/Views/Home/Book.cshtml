@@ -1,0 +1,75 @@
+﻿@model ContosoUniversity.Models.SuppliersCategoriesBooksViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="jumbotron">
+    <h1>Contoso University</h1>
+</div>
+
+@Html.Partial("_Search")
+
+<div class="container books">
+    <div class="row">
+        <div class="col-lg-3 col-12 md-mt-40 sm-mt-40">
+            <div class="shopping_slidebar thumbnail">
+                <aside class="wedget_categories">
+                    <h3 class="wedget__titl">Categories</h3>
+                    <ul>
+                        @foreach (var item in Model.Categories)
+                        {
+                            <li>@Html.DisplayFor(itemModel => item.Name)</li>
+                        }
+                    </ul>
+                </aside>
+            </div>
+            <div class="shopping_slidebar thumbnail">
+                <aside class="wedget_categories">
+                    <h3 class="wedget__titl">Authors</h3>
+                    <ul>
+                        @foreach (var item in Model.Suppliers)
+                        {
+                            <li>@Html.DisplayFor(itemModel => item.Name)</li>
+                        }
+                    </ul>
+                </aside>
+            </div>
+        </div>
+
+        <div class="col-lg-9 col-12">
+            <div class="row">
+                @foreach (var item in Model.Books)
+                {
+                    <div class="product_price_box details_page thumbnail col-lg-3 col-md-3 col-sm-6 col-12">
+                        <img src="~/images/@Html.DisplayFor(modelItem => item.Image)" alt="@Html.DisplayFor(modelItem => item.Image)" />
+                        <h2 class="book_title">@Html.DisplayFor(modelItem => item.Name)</h2>
+                        <h2 class="price">$ @Html.DisplayFor(modelItem => item.Price)</h2>
+                        <p>
+                            <a class="btn btn-primary glyphicon glyphicon-list-alt" href="#" role="button"> Details</a>
+                            <a class="btn btn-success glyphicon glyphicon-shopping-cart" href="#" role="button"> Buy</a>
+                        </p>
+                    </div>
+                }
+            </div>
+
+            @{
+                var preDisabled = !Model.HasPreviousPage ? "disabled" : "";
+                var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+            }
+            <div style="text-align:center">
+                <ul class="pagination pagination-lg">
+                    <li class="page-item">
+                        <a asp-action="Book" asp-route-pageNumber="@(Model.PageIndex -1)" class="btn-primary btn @preDisabled">Previous</a>
+                    </li>
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item"><a asp-action="Book" asp-route-pageNumber=@i class="page-link">@i</a></li>
+                    }
+                    <li class="page-item ">
+                        <a asp-action="Book" asp-route-pageNumber="@(Model.PageIndex +1)" class="btn-primary btn @nextDisabled">Next</a>
+                    </li>
+                </ul>
+            </div>            
+        </div>
+    </div>
+</div>
